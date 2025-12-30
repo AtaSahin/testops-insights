@@ -322,4 +322,4 @@ Modules are independent and analytics logic is implemented using pure functions 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is part of a TestOps demonstration and is designed to showcase best practices in test operations and pipeline health monitoring.
