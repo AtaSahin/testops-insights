@@ -319,7 +319,3 @@ Modules are independent and analytics logic is implemented using pure functions 
 - Python 3.8+
 - pytest (for running tests)
 - pyyaml (for configuration file support)
-
-## License
-
-This project is part of a TestOps demonstration and is designed to showcase best practices in test operations and pipeline health monitoring.
