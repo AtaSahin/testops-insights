@@ -1,0 +1,8 @@
+runs_path: ./sample-data/runs
+analysis:
+  flaky_threshold: 0.3
+  slow_test_threshold_sec: 2.0
+  last_n_runs: null
+report:
+  output_dir: ./report
+  suite_name: Sample Test Suite
