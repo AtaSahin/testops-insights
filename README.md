@@ -1,7 +1,7 @@
 # TestOps Insights
 
 TestOps Dashboard is a tool that analyzes test results generated in CI/CD environments (initially JUnit XML / pytest outputs) to identify flaky tests and assess overall pipeline health.
-
+### Executive Summary and Health Score
 <p align="center">
   <img src="docs/images/dashboard-full.png" alt="TestOps Insights Dashboard" width="800">
 </p>
@@ -74,9 +74,7 @@ testops-insights analyze --runs-path ./test-results --out ./report
 
 Open `report/index.html` in your browser.
 
-<p align="center">
-  <img src="docs/images/dashboard-summary.png" alt="Dashboard Overview" width="800">
-</p>
+
 
 ## Usage
 
@@ -276,11 +274,6 @@ The dashboard provides:
 5. **Slowest Tests**: Performance analysis
 6. **Trends**: Pass rate and duration trends over time
 
-### Executive Summary and Health Score
-
-<p align="center">
-  <img src="docs/images/dashboard-summary.png" alt="Executive Summary and Health Score" width="800">
-</p>
 
 The dashboard shows key metrics in an easy-to-understand format, allowing teams to quickly assess pipeline health at a glance.
 
