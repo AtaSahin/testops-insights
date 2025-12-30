@@ -1,40 +1,31 @@
 # TestOps Insights
 
-TestOps Dashboard is a tool that analyzes test results generated in CI/CD environments (initially JUnit XML / pytest outputs) to identify flaky tests and assess overall pipeline health.
-### Executive Summary and Health Score
+A tool for analyzing test results from CI/CD pipelines. Parses JUnit XML outputs, finds flaky tests, and tracks pipeline health over time.
+
 <p align="center">
   <img src="docs/images/dashboard-full.png" alt="TestOps Insights Dashboard" width="800">
 </p>
 
-## Positioning: TestOps Insights vs Allure
+## What's the difference from Allure?
 
-**Allure** is designed for single-run, detailed debugging:
+**Allure** is great for debugging a single test run. You get detailed logs, screenshots, and step-by-step execution info to figure out why something failed.
 
-- Rich HTML reports with screenshots, logs, and step-by-step execution details
-- Best for investigating why a specific test failed in a single execution
-- Focuses on test execution details and debugging information
+**TestOps Insights** looks at multiple test runs to find patterns. It spots flaky tests that sometimes pass and sometimes fail, calculates overall pipeline health, and shows trends over time.
 
-**TestOps Insights** analyzes multiple test runs for reliability and trends:
-
-- Identifies flaky tests that pass and fail inconsistently across runs
-- Calculates pipeline health scores based on historical data
-- Tracks trends in pass rates and test durations over time
-- Focuses on test system reliability and pipeline health assessment
-
-These tools are complementary: Use Allure for debugging individual test failures, and TestOps Insights for understanding test reliability and pipeline trends.
+Use both: Allure when you need to debug a specific failure, TestOps Insights when you want to understand test reliability.
 
 ## Features
 
-- Parse JUnit XML test results from multiple test runs
-- Automatic discovery of test runs from folder structure
-- Detect flaky tests (tests that fluctuate between pass and fail across runs)
-- Identify the most frequently failing tests
-- Identify the slowest tests
-- Calculate pipeline health score
-- Generate static HTML dashboard with metrics
-- Configuration file support (testops.yaml)
-- CI/CD friendly with exit codes for quality gates
-- Machine-readable metrics output (JSON)
+- Parse JUnit XML files from multiple test runs
+- Automatically find test runs in folder structures
+- Detect flaky tests (ones that pass and fail inconsistently)
+- List tests that fail most often
+- Find slow tests
+- Calculate a pipeline health score
+- Generate HTML dashboard
+- Config file support (testops.yaml)
+- Exit codes for CI quality gates
+- JSON metrics output
 
 ## Installation
 
@@ -42,17 +33,17 @@ These tools are complementary: Use Allure for debugging individual test failures
 pip install -r requirements.txt
 ```
 
-Or install in development mode:
+Or for development:
 
 ```bash
 pip install -e .
 ```
 
-After installation, the `testops-insights` command will be available.
+After install, `testops-insights` command is available.
 
 ## Quick Start
 
-1. **Organize your test results** in a folder structure:
+1. Put your test results in folders like this:
 
 ```
 test-results/
@@ -64,38 +55,36 @@ test-results/
     junit.xml
 ```
 
-2. **Run the analysis**:
+2. Run analysis:
 
 ```bash
 testops-insights analyze --runs-path ./test-results --out ./report
 ```
 
-3. **View the dashboard**:
+3. Open the dashboard:
 
 Open `report/index.html` in your browser.
 
-
-
 ## Usage
 
-### Basic Command
+### Basic command
 
 ```bash
 testops-insights analyze --runs-path <runs_directory> --out <output_directory>
 ```
 
-### Command Options
+### Options
 
-- `--runs-path`: Path to directory containing test run folders (default: `./test-results`)
-- `--out`: Output directory for report (default: `./report`)
+- `--runs-path`: Directory with test run folders (default: `./test-results`)
+- `--out`: Output directory (default: `./report`)
 - `--name`: Test suite name (default: "Test Suite")
-- `--config`: Path to config file (default: `testops.yaml` or `testops.yml`)
-- `--last N`: Analyze only the most recent N runs
-- `--fail-under-health SCORE`: Exit with non-zero code if health score is below threshold
+- `--config`: Config file path (default: `testops.yaml` or `testops.yml`)
+- `--last N`: Only analyze the last N runs
+- `--fail-under-health SCORE`: Exit with error if health score is below this
 
-### Configuration File
+### Config file
 
-Create a `testops.yaml` file in your project root:
+Create `testops.yaml` in your project root:
 
 ```yaml
 runs_path: ./test-results
@@ -108,42 +97,41 @@ report:
   suite_name: Production Tests
 ```
 
-Then simply run:
+Then just run:
 
 ```bash
 testops-insights analyze
 ```
 
-The tool will automatically use the configuration file.
+It uses the config file automatically.
 
 ### Examples
 
-**Using sample data:**
+Analyze sample data:
 
 ```bash
 testops-insights analyze --runs-path ./sample-data/runs --out ./report
 ```
 
-**With configuration file:**
+Use config file:
 
 ```bash
-# Create testops.yaml first, then:
 testops-insights analyze
 ```
 
-**Analyze only last 5 runs:**
+Only last 5 runs:
 
 ```bash
 testops-insights analyze --runs-path ./test-results --last 5
 ```
 
-**Fail build if health score below 70:**
+Fail build if health below 70:
 
 ```bash
 testops-insights analyze --runs-path ./test-results --fail-under-health 70
 ```
 
-**Custom suite name:**
+Custom name:
 
 ```bash
 testops-insights analyze --runs-path ./test-results --out ./report --name "CI Pipeline"
@@ -239,15 +227,15 @@ pipeline {
 }
 ```
 
-## Output Structure
+## Output
 
-The tool generates a report directory with the following structure:
+The tool creates a report folder:
 
 ```
 report/
-  index.html          # Main dashboard
-  metrics.json        # Machine-readable metrics
-  assets/             # CSS and other assets (if needed)
+  index.html          # Dashboard
+  metrics.json        # Metrics in JSON
+  assets/             # CSS and other files
 ```
 
 ## Project Structure
@@ -255,35 +243,32 @@ report/
 ```
 testops_insight/
   ingestion/        # JUnit XML parsing
-  domain/           # Domain models (TestCase, TestRun, TestSuite)
-  analytics/        # Analysis functions (flaky detection, health score)
-  reporting/        # HTML report generation
-  cli/              # Command-line interface
-tests/              # Unit tests
-sample-data/        # Sample test run data
+  domain/           # Models (TestCase, TestRun, TestSuite)
+  analytics/        # Analysis functions
+  reporting/        # HTML generation
+  cli/              # Command line interface
+tests/              # Tests
+sample-data/        # Sample data
 ```
 
-## Dashboard Overview
+## Dashboard
 
-The dashboard provides:
+The dashboard shows:
 
-1. **Executive Summary**: Key metrics at a glance (Pass Rate, Flaky Tests Count, Failing Tests Count, Avg Test Duration)
-2. **Pipeline Health Score**: Overall health score (0-100) with explanation
-3. **Flaky Tests**: Tests that fluctuate between pass and fail
-4. **Top Failing Tests**: Tests that fail consistently
-5. **Slowest Tests**: Performance analysis
-6. **Trends**: Pass rate and duration trends over time
+1. **Summary**: Pass rate, flaky count, failing count, average duration
+2. **Health score**: Overall score (0-100) with explanation
+3. **Flaky tests**: Tests that pass and fail inconsistently
+4. **Failing tests**: Tests that fail frequently
+5. **Slow tests**: Performance issues
+6. **Trends**: How pass rate and duration change over time
 
-
-The dashboard shows key metrics in an easy-to-understand format, allowing teams to quickly assess pipeline health at a glance.
-
-### Detailed Test Analysis
+<p align="center">
+  <img src="docs/images/dashboard-summary.png" alt="Executive Summary and Health Score" width="800">
+</p>
 
 <p align="center">
   <img src="docs/images/dashboard-details.png" alt="Flaky Tests and Failures" width="800">
 </p>
-
-Detailed tables help identify problematic tests and performance bottlenecks, enabling teams to prioritize fixes.
 
 ## Running Tests
 
@@ -291,24 +276,28 @@ Detailed tables help identify problematic tests and performance bottlenecks, ena
 pytest tests/
 ```
 
-Or with verbose output:
+Verbose output:
 
 ```bash
 python -m pytest tests/ -v
 ```
 
-## Architectural Approach
+## Architecture
 
-- **Ingestion layer**: Parsing only (JUnit XML → normalized data)
-- **Domain layer**: Pure models (TestCase, TestRun)
-- **Analytics layer**: Flaky detection, trends, slow tests, health score (pure functions, no side effects)
-- **Reporting layer**: Static HTML report generation
-- **CLI layer**: Command-line execution suitable for CI environments
+- **Ingestion**: Parses JUnit XML into structured data
+- **Domain**: Core models (TestCase, TestRun, TestSuite)
+- **Analytics**: Pure functions for analysis (flaky detection, health score, etc.)
+- **Reporting**: Generates HTML dashboard
+- **CLI**: Command-line interface for CI/CD
 
-Modules are independent and analytics logic is implemented using pure functions (no side effects).
+Modules are independent. Analytics are pure functions with no side effects.
 
 ## Requirements
 
 - Python 3.8+
-- pytest (for running tests)
-- pyyaml (for configuration file support)
+- pytest
+- pyyaml
+
+## License
+
+This project is part of a TestOps demonstration and is designed to showcase best practices in test operations and pipeline health monitoring.
