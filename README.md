@@ -2,6 +2,8 @@
 
 TestOps Dashboard is a tool that analyzes test results generated in CI/CD environments (initially JUnit XML / pytest outputs) to identify flaky tests and assess overall pipeline health.
 
+![TestOps Insights Dashboard](docs/images/dashboard-full.png)
+
 ## Positioning: TestOps Insights vs Allure
 
 **Allure** is designed for single-run, detailed debugging:
@@ -69,6 +71,8 @@ testops-insights analyze --runs-path ./test-results --out ./report
 3. **View the dashboard**:
 
 Open `report/index.html` in your browser.
+
+![Dashboard Overview](docs/images/dashboard-overview.png)
 
 ## Usage
 
@@ -267,6 +271,14 @@ The dashboard provides:
 4. **Top Failing Tests**: Tests that fail consistently
 5. **Slowest Tests**: Performance analysis
 6. **Trends**: Pass rate and duration trends over time
+
+![Executive Summary and Health Score](docs/images/dashboard-summary.png)
+
+The dashboard shows key metrics in an easy-to-understand format, allowing teams to quickly assess pipeline health.
+
+![Flaky Tests and Failures](docs/images/dashboard-details.png)
+
+Detailed tables help identify problematic tests and performance bottlenecks.
 
 ## Running Tests
 
